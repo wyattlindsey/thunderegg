@@ -1,9 +1,11 @@
 import * as React from 'react'
+import Loadable from 'react-loadable'
+
 import Store from 'store'
 import { setLoaded, setPending } from 'actions/loading'
 import { LOADING_TARGETS } from 'constants/loading'
 
-import Loadable from 'react-loadable'
+import LoadingIndicator from 'components/LoadingIndicator'
 
 const loadingStyles = {
   alignItems: 'center',
@@ -18,31 +20,27 @@ const loadingStyles = {
 }
 
 const Loader = Loadable.Map({
+  delay: 500,
   loader: {
-    ThreeViewport: () => {
+    ThreeViewport: async () => {
       Store.dispatch(setPending(LOADING_TARGETS.THREE_VIEWPORT))
-      return new Promise(resolve => {
-        setTimeout(() => {
-          import('components/ThreeViewport').then(m => {
-            Store.dispatch(setLoaded(LOADING_TARGETS.THREE_VIEWPORT))
-            resolve(m)
-          })
-        }, 4000)
-      })
+      const ThreeViewport = await import('components/ThreeViewport')
+      Store.dispatch(setLoaded(LOADING_TARGETS.THREE_VIEWPORT))
+      return ThreeViewport
     },
-    ShapeViewport: () => {
+    ShapeViewport: async () => {
       Store.dispatch(setPending(LOADING_TARGETS.SHAPE_VIEWPORT))
-      return new Promise(resolve =>
-        setTimeout(() => {
-          import('components/ShapeViewport').then(m => {
-            Store.dispatch(setLoaded(LOADING_TARGETS.SHAPE_VIEWPORT))
-            resolve(m)
-          })
-        }, 2000)
-      )
+      const ShapeViewport = await import('components/ShapeViewport')
+      Store.dispatch(setLoaded(LOADING_TARGETS.SHAPE_VIEWPORT))
+      return ShapeViewport
     },
   },
-  loading: () => <div style={loadingStyles}>Please wait</div>,
+  loading: props =>
+    props.pastDelay && (
+      <div style={loadingStyles}>
+        <LoadingIndicator />
+      </div>
+    ),
   render(loaded, props) {
     const ThreeViewport = loaded.ThreeViewport.default
     const ShapeViewport = loaded.ShapeViewport.default

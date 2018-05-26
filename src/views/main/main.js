@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 
-import LoadingIndicator from 'components/LoadingIndicator'
 import AsyncLoader from 'components/AsyncLoader'
 
 import { LOADING_STATES, LOADING_TARGETS } from 'constants/loading'
@@ -56,7 +55,6 @@ class Main extends React.PureComponent {
         style={wrapperStyle}
       >
         <div>ThunderEgg Base</div>
-        <LoadingIndicator />
         <div style={threeViewportStyle}>
           <AsyncLoader width={this.state.width} />
         </div>
