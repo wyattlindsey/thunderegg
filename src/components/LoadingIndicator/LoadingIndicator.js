@@ -4,9 +4,10 @@ import { LOADING_STATES } from 'constants/loading'
 
 class LoadingIndicator extends React.PureComponent {
   render() {
-    const { loading } = this.props
+    const { loading, timedOut } = this.props
+    console.log(this.props)
 
-    return (
+    return timedOut ? (<div>Application loading timed out</div>): (
       <div>
         {Object.keys(loading).map((k, i) => (
           <div

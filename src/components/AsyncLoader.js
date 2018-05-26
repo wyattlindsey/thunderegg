@@ -38,7 +38,7 @@ const Loader = Loadable.Map({
   loading: props =>
     props.pastDelay && (
       <div style={loadingStyles}>
-        <LoadingIndicator />
+        <LoadingIndicator {...props} />
       </div>
     ),
   render(loaded, props) {
@@ -51,6 +51,7 @@ const Loader = Loadable.Map({
       </ThreeViewport>
     )
   },
+  timeOut: 20000,
 })
 
 export default Loader
