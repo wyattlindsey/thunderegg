@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 
 import LoadingIndicator from 'components/LoadingIndicator'
-import ShapeViewport from 'components/ShapeViewport'
-import ThreeViewport from 'components/ThreeViewport'
+import AsyncLoader from 'components/AsyncLoader'
 
 import { LOADING_STATES, LOADING_TARGETS } from 'constants/loading'
 
@@ -39,10 +38,6 @@ class Main extends React.PureComponent {
     window.removeEventListener('resize', this.handleResize)
   }
 
-  get shapes() {
-    return props => <ShapeViewport {...props} />
-  }
-
   /* eslint-disable no-invalid-this */
   handleResize = debounce(() => {
     if (typeof window === 'undefined') return
@@ -53,8 +48,6 @@ class Main extends React.PureComponent {
   /* eslint-enable no-invalid-this */
 
   render() {
-    const Shapes = props => <ShapeViewport {...props} />
-
     return (
       <div
         ref={c => {
@@ -62,12 +55,10 @@ class Main extends React.PureComponent {
         }}
         style={wrapperStyle}
       >
-        <div>React Redux ThreeJS Lite</div>
+        <div>ThunderEgg Base</div>
         <LoadingIndicator />
         <div style={threeViewportStyle}>
-          <ThreeViewport width={this.state.width}>
-            <Shapes />
-          </ThreeViewport>
+          <AsyncLoader width={this.state.width} />
         </div>
       </div>
     )
